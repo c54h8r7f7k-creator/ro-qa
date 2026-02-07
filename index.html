@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RO 仙境傳說：世界之旅 QA</title>
+    <style>
+        :root {
+            --primary-pink: #ffb7c5;
+            --soft-blue: #bde0fe;
+            --deep-pink: #ff85a2;
+            --glass: rgba(255, 255, 255, 0.9);
+            --text: #5a4a42;
+        }
+
+        body, html {
+            margin: 0; padding: 0; height: 100%;
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            overflow: hidden;
+            background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+        }
+
+        /* 背景裝飾：緩緩升起的泡泡 */
+        .bg-elements {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1; pointer-events: none;
+        }
+
+        .bubble {
+            position: absolute; bottom: -100px;
+            background: radial-gradient(circle, #fff 0%, var(--primary-pink) 70%);
+            border-radius: 50%; opacity: 0.6;
+            animation: floatUp 15s infinite ease-in;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* 互動容器 */
+        .wrapper {
+            position: relative; z-index: 10;
+            display: flex; justify-content: center; align-items: center;
+            height: 100vh; perspective: 1000px;
+        }
+
+        .game-card {
+            width: 90%; max-width: 420px;
+            background: var(--glass);
+            border-radius: 35px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            border: 4px solid #fff;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            color: var(--deep-pink); font-size: 1.6rem;
+            margin-bottom: 25px; text-shadow: 1px 1px 0px white;
+        }
+
+        /* 問題列表樣式 */
+        .qa-list { list-style: none; padding: 0; margin: 0; }
+        
+        .qa-item {
+            background: #fff;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            color: var(--text);
+            font-weight: bold;
+            box-shadow: 0 4px 0 #ffe4e9;
+            transition: all 0.2s;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+
+        .qa-item:hover {
+            transform: translateY(-2px);
+            background: #fffafa;
+            box-shadow: 0 6px 0 #ffd1d9;
+        }
+
+        .qa-item:active {
+            transform: translateY(2px);
+            box-shadow: 0 0px 0 #ffd1d9;
+        }
+
+        .qa-item::after { content: '✨'; font-size: 0.8rem; }
+
+        /* 解答頁面 */
+        .hidden { display: none; }
+        
+        .answer-box {
+            padding: 10px; min-height: 150px;
+            display: flex; flex-direction: column; justify-content: center;
+        }
+
+        .answer-text {
+            font-size: 1.2rem; line-height: 1.7;
+            color: #6a5a52; margin-bottom: 30px;
+        }
+
+        .btn-home {
+            background: linear-gradient(to right, #ff9a9e, #fecfef);
+            color: white; border: none;
+            padding: 12px 35px; border-radius: 30px;
+            font-weight: bold; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
+            align-self: center;
+            transition: 0.3s;
+        }
+
+        .btn-home:hover { transform: scale(1.05); }
+
+        /* 轉場動畫 */
+        .flipping { transform: rotateY(90deg); opacity: 0; }
+    </style>
+</head>
+<body>
+
+    <div class="bg-elements" id="bubbles"></div>
+
+    <div class="wrapper">
+        <div class="game-card" id="mainCard">
+            
+            <div id="homePage">
+                <h1>🌸 冒險者 QA 指南 🌸</h1>
+                <div class="qa-list">
+                    <div class="qa-item" onclick="handleTap(1)">請問下一關要去哪?</div>
+                    <div class="qa-item" onclick="handleTap(2)">請問闖關卡怎麼拿?</div>
+                    <div class="qa-item" onclick="handleTap(3)">請問要去哪裡蓋章?</div>
+                    <div class="qa-item" onclick="handleTap(4)">闖關完可以獲得什麼?</div>
+                    <div class="qa-item" onclick="handleTap(5)">電腦與手機遊戲一樣嗎?</div>
+                </div>
+            </div>
+
+            <div id="ansPage" class="hidden">
+                <h1 id="ansTitle">解答</h1>
+                <div class="answer-box">
+                    <div class="answer-text" id="ansContent"></div>
+                    <button class="btn-home" onclick="goHome()">返回列表</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <audio id="clickSound" src="https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3"></audio>
+
+    <script>
+        const qaData = {
+            1: "可以繞我們櫃一圈(順時、逆時都可)，就可以把其他三關都跑完喔！不須管順序～",
+            2: "幫我找我們櫃四周穿白色衣服的美女領！",
+            3: "面對我們櫃的這個方向直走右轉會看到大月亮！那裡就有蓋章區！",
+            4: "闖關完可以獲得一個夾娃娃機會！球球裡面都有小驚喜喔！",
+            5: "完全一樣喔！這是一款跨平台大世界遊戲，無論用什麼玩都順暢！"
+        };
+
+        const card = document.getElementById('mainCard');
+        const sound = document.getElementById('clickSound');
+
+        // 生成背景泡泡
+        function createBubbles() {
+            const container = document.getElementById('bubbles');
+            for(let i=0; i<15; i++) {
+                const b = document.createElement('div');
+                b.className = 'bubble';
+                const size = Math.random() * 60 + 20 + 'px';
+                b.style.width = size;
+                b.style.height = size;
+                b.style.left = Math.random() * 100 + '%';
+                b.style.animationDelay = Math.random() * 10 + 's';
+                container.appendChild(b);
+            }
+        }
+        createBubbles();
+
+        function handleTap(id) {
+            sound.currentTime = 0;
+            sound.play(); // 播放點擊音效
+            
+            card.classList.add('flipping');
+            
+            setTimeout(() => {
+                document.getElementById('homePage').classList.add('hidden');
+                document.getElementById('ansPage').classList.remove('hidden');
+                document.getElementById('ansContent').innerText = qaData[id];
+                card.classList.remove('flipping');
+            }, 300);
+        }
+
+        function goHome() {
+            card.classList.add('flipping');
+            setTimeout(() => {
+                document.getElementById('ansPage').classList.add('hidden');
+                document.getElementById('homePage').classList.remove('hidden');
+                card.classList.remove('flipping');
+            }, 300);
+        }
+    </script>
+</body>
+</html>
