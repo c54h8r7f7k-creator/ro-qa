@@ -21,22 +21,22 @@
             background: var(--bg-gradient);
         }
 
-        /* 背景裝飾：超大清晰花朵 */
-        .deco-container {
+        /* 背景容器 */
+        #decoContainer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none;
         }
 
+        /* 背景大花朵樣式 */
         .floating-flower {
             position: absolute;
             bottom: -300px;
-            color: rgba(129, 212, 250, 0.7); 
+            color: rgba(129, 212, 250, 0.7);
             user-select: none;
             animation: floatUp 16s infinite ease-in;
             text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
         }
 
-        /* 這裡調大了 scale，讓花朵真的很大 */
         @keyframes floatUp {
             0% { transform: translateY(0) rotate(0deg) scale(0.75); opacity: 0; }
             20% { opacity: 0.7; }
@@ -68,7 +68,6 @@
             font-size: 1.8rem; 
             margin-bottom: 30px;
             letter-spacing: 2px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
         .qa-item {
@@ -84,27 +83,20 @@
             display: flex; align-items: center; justify-content: space-between;
             font-size: 1.05rem;
             border: 1px solid #f0faff;
-            position: relative; /* 為了讓 ::before 定位 */
+            position: relative;
         }
 
         .qa-item:hover { transform: translateY(-3px); background: #f0faff; }
         .qa-item:active { transform: translateY(3px); box-shadow: 0 0px 0 #e1f5fe; }
         
-        /* 大愛心 🩵 */
-        .qa-item::after { 
-            content: '🩵'; 
-            font-size: 1.25rem;
-            margin-left: 10px;
-        }
-
-        /* 小愛心 💙：定位在右上角 */
+        /* 大小愛心組合 */
+        .qa-item::after { content: '🩵'; font-size: 1.25rem; margin-left: 10px; }
         .qa-item::before {
             content: '💙';
             font-size: 0.7rem;
             position: absolute;
-            right: 18px; /* 調整與大愛心的距離 */
+            right: 18px;
             top: 15px;
-            opacity: 0.9;
         }
 
         .hidden { display: none; }
@@ -117,7 +109,6 @@
             background: linear-gradient(45deg, #81d4fa, #b3e5fc);
             color: white; border: none; padding: 15px 40px;
             border-radius: 35px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(129, 212, 250, 0.3);
             font-size: 1rem;
         }
 
@@ -136,11 +127,10 @@
 </head>
 <body>
 
-    <div class="deco-container" id="decoContainer"></div>
+    <div id="decoContainer"></div>
 
     <div class="app-wrapper">
         <div class="game-card" id="mainCard">
-            
             <div id="pageHome">
                 <h1>🌼 冒險者指南 🌼</h1>
                 <div class="qa-item" onclick="launch(1, event)">請問下一關要去哪?</div>
@@ -155,11 +145,8 @@
                 <div class="ans-text" id="ansBody"></div>
                 <button class="btn-back" onclick="goHome()">回主頁面</button>
             </div>
-
         </div>
     </div>
-
-    <audio id="sfx" src="https://www.soundjay.com/communication/sounds/beep-07.mp3" preload="auto"></audio>
 
     <script>
         const content = {
@@ -170,42 +157,36 @@
             5: "完全一樣喔！這是一款跨平台大世界遊戲，無論用什麼玩都順暢！"
         };
 
+        // 背景生成
         const deco = document.getElementById('decoContainer');
         const bgFlowers = ['❄️', '🩵', '🤍', '🍃', '🌸']; 
-        
-        // 生成背景大花朵
         for(let i=0; i<12; i++) {
             const f = document.createElement('div');
             f.className = 'floating-flower';
             f.innerText = bgFlowers[Math.floor(Math.random() * bgFlowers.length)];
             f.style.left = Math.random() * 100 + '%';
-            f.style.fontSize = Math.random() * 50 + 50 + 'px'; // 基礎字體也調大
-            f.style.animationDelay = Math.random() * 12 + 's';
-            f.style.animationDuration = Math.random() * 8 + 10 + 's';
+            f.style.fontSize = (Math.random() * 50 + 50) + 'px'; 
+            f.style.animationDelay = (Math.random() * 12) + 's';
+            f.style.animationDuration = (Math.random() * 6 + 10) + 's';
             deco.appendChild(f);
         }
 
-        function createParticles(x, y) {
-            const particles = ['❄️', '🩵', '🌸', '🤍', '✨'];
+        function launch(id, e) {
+            // 粒子特效
+            const particles = ['❄️', '🩵', '✨'];
             for(let i=0; i<8; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
                 p.innerText = particles[Math.floor(Math.random() * particles.length)];
-                p.style.left = x + 'px';
-                p.style.top = y + 'px';
+                p.style.left = e.clientX + 'px';
+                p.style.top = e.clientY + 'px';
                 p.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
                 p.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
-                p.style.fontSize = Math.random() * 15 + 15 + 'px';
                 document.body.appendChild(p);
                 setTimeout(() => p.remove(), 800);
             }
-        }
 
-        function launch(id, e) {
-            const sfx = document.getElementById('sfx');
-            sfx.currentTime = 0;
-            sfx.play().catch(()=>{});
-            createParticles(e.clientX, e.clientY);
+            // 切換頁面
             const card = document.getElementById('mainCard');
             card.classList.add('card-flip');
             setTimeout(() => {
@@ -217,9 +198,6 @@
         }
 
         function goHome() {
-            const sfx = document.getElementById('sfx');
-            sfx.currentTime = 0;
-            sfx.play().catch(()=>{});
             const card = document.getElementById('mainCard');
             card.classList.add('card-flip');
             setTimeout(() => {
