@@ -6,11 +6,10 @@
     <title>RO 仙境傳說：世界之旅 FAQ</title>
     <style>
         :root {
-            --sky-blue: #e0f7fa;
-            --soft-blue: #81d4fa; /* 粉藍色系 */
-            --dream-blue: #b3e5fc;
+            --soft-blue: #81d4fa;
             --glass-white: rgba(255, 255, 255, 0.9);
-            --text-blue: #4f9bbd; /* 深粉藍文字 */
+            --text-blue: #4f9bbd;
+            --bg-gradient: linear-gradient(180deg, #b3e5fc 0%, #e1f5fe 50%, #ffffff 100%);
         }
 
         * { box-sizing: border-box; }
@@ -19,27 +18,29 @@
             margin: 0; padding: 0; height: 100%;
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
             overflow: hidden;
-            /* 水藍色夢幻漸層 */
-            background: linear-gradient(180deg, #b3e5fc 0%, #e1f5fe 50%, #ffffff 100%);
+            background: var(--bg-gradient);
         }
 
-        /* 藍色系夢幻背景氣泡 */
+        /* 背景裝飾：改為緩緩升起的透明花朵 */
         .deco-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none;
         }
 
-        .floating-orb {
-            position: absolute; border-radius: 50%;
-            /* 改為藍色系泡泡 */
-            background: radial-gradient(circle, #ffffff 0%, #b3e5fc 80%);
-            opacity: 0.5; animation: floatUp 12s infinite ease-in;
+        .floating-flower {
+            position: absolute;
+            bottom: -100px;
+            /* 使用透明藍色調 */
+            color: rgba(129, 212, 250, 0.3); 
+            user-select: none;
+            animation: floatUp 12s infinite ease-in;
+            filter: blur(1px); /* 輕微模糊增加層次感 */
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            50% { opacity: 0.6; }
-            100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0; }
+            30% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg) scale(1.5); opacity: 0; }
         }
 
         /* 主容器 */
@@ -55,7 +56,7 @@
             background: var(--glass-white);
             border-radius: 40px;
             border: 6px solid #fff;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
             backdrop-filter: blur(15px);
             padding: 40px 25px;
             text-align: center;
@@ -63,16 +64,13 @@
             transform-style: preserve-3d;
         }
 
-        /* 標題改為粉藍色系 */
         h1 {
             color: var(--soft-blue); 
             font-size: 1.8rem; 
             margin-bottom: 30px;
-            letter-spacing: 2px; 
+            letter-spacing: 2px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
-
-        .flower-icon { font-size: 1.4rem; vertical-align: middle; margin: 0 8px; color: #add8e6; }
 
         /* 選項樣式 */
         .qa-item {
@@ -92,15 +90,12 @@
 
         .qa-item:hover { transform: translateY(-3px); background: #f0faff; }
         .qa-item:active { transform: translateY(3px); box-shadow: 0 0px 0 #e1f5fe; }
-        
-        /* 問題右側的花朵 */
-        .qa-item::after { content: '🤍'; color: #b2ebf2; font-size: 1.1rem; }
+        .qa-item::after { content: '💠'; color: #b2ebf2; font-size: 1.1rem; }
 
-        /* 解答頁 */
         .hidden { display: none; }
         .ans-text {
             font-size: 1.2rem; line-height: 1.8; color: #546e7a;
-            margin: 30px 0; min-height: 120px;
+            margin: 30px 0; min-height: 100px;
         }
 
         .btn-back {
@@ -108,9 +103,10 @@
             color: white; border: none; padding: 15px 40px;
             border-radius: 35px; font-weight: bold; cursor: pointer;
             box-shadow: 0 5px 15px rgba(129, 212, 250, 0.3);
+            font-size: 1rem;
         }
 
-        /* 點擊噴發粒子：花朵特效 */
+        /* 點擊粒子效果 */
         .particle {
             position: fixed; pointer-events: none; z-index: 100;
             animation: burst 0.8s ease-out forwards;
@@ -132,16 +128,16 @@
         <div class="game-card" id="mainCard">
             
             <div id="pageHome">
-                <h1>🌼 冒險者指南 🌼</h1>
+                <h1>🌸 冒險者指南 🌸</h1>
                 <div class="qa-item" onclick="launch(1, event)">請問下一關要去哪?</div>
                 <div class="qa-item" onclick="launch(2, event)">請問闖關卡怎麼拿?</div>
                 <div class="qa-item" onclick="launch(3, event)">請問要去哪裡蓋章?</div>
-                <div class="qa-item" onclick="launch(4, event)">闖關完可以獲得什麼?</div>
-                <div class="qa-item" onclick="launch(5, event)">電腦手機遊戲一樣嗎?</div>
+                <div class="qa-item" onclick="launch(4, event)">請問闖關完可以獲得什麼?</div>
+                <div class="qa-item" onclick="launch(5, event)">你們這關電腦跟手機的遊戲都一樣嗎?</div>
             </div>
 
             <div id="pageAns" class="hidden">
-                <h1 id="ansTitle">🌸 小秘訣 🌸</h1>
+                <h1 id="ansTitle">🌼 小秘訣 🌼</h1>
                 <div class="ans-text" id="ansBody"></div>
                 <button class="btn-back" onclick="goHome()">回主頁面</button>
             </div>
@@ -160,29 +156,31 @@
             5: "完全一樣喔！這是一款跨平台大世界遊戲，無論用什麼玩都順暢！"
         };
 
-        // 背景藍色系氣泡生成
+        // 背景生成藍色系花朵
         const deco = document.getElementById('decoContainer');
+        const bgFlowers = ['🌼', '🤍', '🔹', '🍃', '🌸']; // 背景花朵池
+        
         for(let i=0; i<15; i++) {
-            const orb = document.createElement('div');
-            orb.className = 'floating-orb';
-            const size = Math.random() * 60 + 20 + 'px';
-            orb.style.width = size; orb.style.height = size;
-            orb.style.left = Math.random() * 100 + '%';
-            orb.style.animationDelay = Math.random() * 8 + 's';
-            deco.appendChild(orb);
+            const f = document.createElement('div');
+            f.className = 'floating-flower';
+            f.innerText = bgFlowers[Math.floor(Math.random() * bgFlowers.length)];
+            f.style.left = Math.random() * 100 + '%';
+            f.style.fontSize = Math.random() * 30 + 20 + 'px';
+            f.style.animationDelay = Math.random() * 10 + 's';
+            f.style.animationDuration = Math.random() * 5 + 10 + 's';
+            deco.appendChild(f);
         }
 
-        // 點擊粒子特效：各種藍粉色系花朵
         function createParticles(x, y) {
-            const flowers = ['🌸', '🌼', '❄️', '🤍', '🍃'];
+            const particles = ['❄️', '💠', '🌼', '🤍', '✨'];
             for(let i=0; i<8; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
-                p.innerText = flowers[Math.floor(Math.random() * flowers.length)];
+                p.innerText = particles[Math.floor(Math.random() * particles.length)];
                 p.style.left = x + 'px';
                 p.style.top = y + 'px';
-                p.style.setProperty('--tx', (Math.random() - 0.5) * 250 + 'px');
-                p.style.setProperty('--ty', (Math.random() - 0.5) * 250 + 'px');
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
                 p.style.fontSize = Math.random() * 15 + 15 + 'px';
                 document.body.appendChild(p);
                 setTimeout(() => p.remove(), 800);
@@ -193,12 +191,9 @@
             const sfx = document.getElementById('sfx');
             sfx.currentTime = 0;
             sfx.play().catch(()=>{});
-
             createParticles(e.clientX, e.clientY);
-
             const card = document.getElementById('mainCard');
             card.classList.add('card-flip');
-            
             setTimeout(() => {
                 document.getElementById('pageHome').classList.add('hidden');
                 document.getElementById('pageAns').classList.remove('hidden');
@@ -211,7 +206,6 @@
             const sfx = document.getElementById('sfx');
             sfx.currentTime = 0;
             sfx.play().catch(()=>{});
-
             const card = document.getElementById('mainCard');
             card.classList.add('card-flip');
             setTimeout(() => {
