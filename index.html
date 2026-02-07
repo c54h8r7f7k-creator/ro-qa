@@ -21,7 +21,7 @@
             background: var(--bg-gradient);
         }
 
-/* 背景裝飾：超大且清晰的花朵 */
+        /* 背景裝飾：改為緩緩升起的透明花朵 */
         .deco-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none;
@@ -29,19 +29,18 @@
 
         .floating-flower {
             position: absolute;
-            bottom: -300px;
-            /* 透明度維持 0.7，色澤鮮明 */
-            color: rgba(129, 212, 250, 0.7); 
+            bottom: -100px;
+            /* 使用透明藍色調 */
+            color: rgba(129, 212, 250, 0.3); 
             user-select: none;
-            animation: floatUp 16s infinite ease-in;
-            /* 移除 blur，保持清晰邊緣 */
-            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
+            animation: floatUp 12s infinite ease-in;
+            filter: blur(1px); /* 輕微模糊增加層次感 */
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg) scale(2); opacity: 0; }
-            20% { opacity: 0.7; }
-            100% { transform: translateY(-140vh) rotate(360deg) scale(5); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg) scale(0.75); opacity: 0; }
+            30% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg) scale(1.5); opacity: 0; }
         }
 
         /* 主容器 */
@@ -91,7 +90,7 @@
 
         .qa-item:hover { transform: translateY(-3px); background: #f0faff; }
         .qa-item:active { transform: translateY(3px); box-shadow: 0 0px 0 #e1f5fe; }
-        .qa-item::after { content: '🌼'; color: #b2ebf2; font-size: 1.1rem; }
+        .qa-item::after { content: '🩵💙'; color: #b2ebf2; font-size: 1.1rem; }
 
         .hidden { display: none; }
         .ans-text {
@@ -129,7 +128,7 @@
         <div class="game-card" id="mainCard">
             
             <div id="pageHome">
-                <h1>🌸 冒險者指南 🌸</h1>
+                <h1>🌼 冒險者指南 🌼</h1>
                 <div class="qa-item" onclick="launch(1, event)">請問下一關要去哪?</div>
                 <div class="qa-item" onclick="launch(2, event)">請問闖關卡怎麼拿?</div>
                 <div class="qa-item" onclick="launch(3, event)">請問要去哪裡蓋章?</div>
@@ -159,7 +158,7 @@
 
         // 背景生成藍色系花朵
         const deco = document.getElementById('decoContainer');
-        const bgFlowers = ['🌼', '🤍', '🔹', '🍃', '🌸']; // 背景花朵池
+        const bgFlowers = ['❄️', '💙', 🤍'', '🍃', '🌸']; // 背景花朵池
         
         for(let i=0; i<15; i++) {
             const f = document.createElement('div');
@@ -173,7 +172,7 @@
         }
 
         function createParticles(x, y) {
-            const particles = ['❄️', '💠', '🌼', '🤍', '✨'];
+            const particles = ['❄️', '🩵', '🌸', '🤍', '✨'];
             for(let i=0; i<8; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
