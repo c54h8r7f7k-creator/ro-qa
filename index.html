@@ -6,7 +6,7 @@
     <title>RO 仙境傳說：世界之旅 FAQ</title>
     <style>
         :root {
-            --soft-blue: #81d4fa;
+            --soft-blue: #2680d5; /* 更新為指定顏色 */
             --glass-white: rgba(255, 255, 255, 0.92);
             --text-blue: #4f9bbd;
             --bg-gradient: linear-gradient(180deg, #b3e5fc 0%, #e1f5fe 50%, #ffffff 100%);
@@ -27,20 +27,20 @@
             z-index: 1; pointer-events: none;
         }
 
-        /* 背景大花朵樣式 */
+        /* 背景花朵：調回原始大小 */
         .floating-flower {
             position: absolute;
-            bottom: -300px;
-            color: rgba(129, 212, 250, 0.7);
+            bottom: -100px;
+            color: rgba(129, 212, 250, 0.4);
             user-select: none;
-            animation: floatUp 16s infinite ease-in;
-            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
+            animation: floatUp 12s infinite ease-in;
+            filter: blur(1px);
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg) scale(0.75); opacity: 0; }
-            20% { opacity: 0.7; }
-            100% { transform: translateY(-140vh) rotate(360deg) scale(1.5); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg) scale(0.7); opacity: 0; }
+            30% { opacity: 0.6; }
+            100% { transform: translateY(-120vh) rotate(360deg) scale(1.2); opacity: 0; }
         }
 
         .app-wrapper {
@@ -64,10 +64,11 @@
         }
 
         h1 {
-            color: var(--soft-blue); 
+            color: var(--soft-blue); /* 使用 2680d5 */
             font-size: 1.8rem; 
             margin-bottom: 30px;
             letter-spacing: 2px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
 
         .qa-item {
@@ -157,23 +158,23 @@
             5: "完全一樣喔！這是一款跨平台大世界遊戲，無論用什麼玩都順暢！"
         };
 
-        // 背景生成
         const deco = document.getElementById('decoContainer');
-        const bgFlowers = ['❄️', '🩵', '🤍', '🍃', '🌸']; 
-        for(let i=0; i<12; i++) {
+        const bgFlowers = ['🌼', '🩵', '🤍', '🍃', '💙']; 
+        
+        // 原始花朵生成邏輯
+        for(let i=0; i<15; i++) {
             const f = document.createElement('div');
             f.className = 'floating-flower';
             f.innerText = bgFlowers[Math.floor(Math.random() * bgFlowers.length)];
             f.style.left = Math.random() * 100 + '%';
-            f.style.fontSize = (Math.random() * 50 + 50) + 'px'; 
-            f.style.animationDelay = (Math.random() * 12) + 's';
-            f.style.animationDuration = (Math.random() * 6 + 10) + 's';
+            f.style.fontSize = (Math.random() * 20 + 20) + 'px'; // 回復原始大小範圍
+            f.style.animationDelay = (Math.random() * 10) + 's';
+            f.style.animationDuration = (Math.random() * 5 + 10) + 's';
             deco.appendChild(f);
         }
 
         function launch(id, e) {
-            // 粒子特效
-            const particles = ['❄️', '🩵', '✨'];
+            const particles = ['❄️', '🩵', '✨', '🤍','🌸'];
             for(let i=0; i<8; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
@@ -186,7 +187,6 @@
                 setTimeout(() => p.remove(), 800);
             }
 
-            // 切換頁面
             const card = document.getElementById('mainCard');
             card.classList.add('card-flip');
             setTimeout(() => {
