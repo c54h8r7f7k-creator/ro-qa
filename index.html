@@ -21,7 +21,7 @@
             background: var(--bg-gradient);
         }
 
-        /* 背景裝飾：改為緩緩升起的透明花朵 */
+/* 背景裝飾：超大且清晰的花朵 */
         .deco-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none;
@@ -29,18 +29,19 @@
 
         .floating-flower {
             position: absolute;
-            bottom: -100px;
-            /* 使用透明藍色調 */
-            color: rgba(129, 212, 250, 0.3); 
+            bottom: -300px;
+            /* 透明度維持 0.7，色澤鮮明 */
+            color: rgba(129, 212, 250, 0.7); 
             user-select: none;
-            animation: floatUp 12s infinite ease-in;
-            filter: blur(1px); /* 輕微模糊增加層次感 */
+            animation: floatUp 16s infinite ease-in;
+            /* 移除 blur，保持清晰邊緣 */
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.5);
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(0) rotate(0deg) scale(0.5); opacity: 0; }
-            30% { opacity: 0.6; }
-            100% { transform: translateY(-120vh) rotate(360deg) scale(1.5); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg) scale(2); opacity: 0; }
+            20% { opacity: 0.7; }
+            100% { transform: translateY(-140vh) rotate(360deg) scale(5); opacity: 0; }
         }
 
         /* 主容器 */
