@@ -7,10 +7,10 @@
     <style>
         :root {
             --sky-blue: #e0f7fa;
+            --soft-blue: #81d4fa; /* 粉藍色系 */
             --dream-blue: #b3e5fc;
-            --main-pink: #ffb7c5;
-            --glass-white: rgba(255, 255, 255, 0.85);
-            --deep-text: #4a6572;
+            --glass-white: rgba(255, 255, 255, 0.9);
+            --text-blue: #4f9bbd; /* 深粉藍文字 */
         }
 
         * { box-sizing: border-box; }
@@ -19,11 +19,11 @@
             margin: 0; padding: 0; height: 100%;
             font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
             overflow: hidden;
-            /* 水藍色夢幻漸層背景 */
-            background: linear-gradient(180deg, #87ceeb 0%, #e0f7fa 50%, #ffffff 100%);
+            /* 水藍色夢幻漸層 */
+            background: linear-gradient(180deg, #b3e5fc 0%, #e1f5fe 50%, #ffffff 100%);
         }
 
-        /* 夢幻漂浮背景裝飾 */
+        /* 藍色系夢幻背景氣泡 */
         .deco-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1; pointer-events: none;
@@ -31,13 +31,14 @@
 
         .floating-orb {
             position: absolute; border-radius: 50%;
-            background: radial-gradient(circle, #fff 0%, var(--main-pink) 80%);
-            opacity: 0.4; animation: floatUp 12s infinite ease-in;
+            /* 改為藍色系泡泡 */
+            background: radial-gradient(circle, #ffffff 0%, #b3e5fc 80%);
+            opacity: 0.5; animation: floatUp 12s infinite ease-in;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(100vh) scale(0.5); opacity: 0; }
-            50% { opacity: 0.5; }
+            50% { opacity: 0.6; }
             100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
         }
 
@@ -54,7 +55,7 @@
             background: var(--glass-white);
             border-radius: 40px;
             border: 6px solid #fff;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.08);
             backdrop-filter: blur(15px);
             padding: 40px 25px;
             text-align: center;
@@ -62,10 +63,16 @@
             transform-style: preserve-3d;
         }
 
+        /* 標題改為粉藍色系 */
         h1 {
-            color: #2e7d32; font-size: 1.8rem; margin-bottom: 30px;
-            letter-spacing: 2px; text-shadow: 2px 2px 0px #fff;
+            color: var(--soft-blue); 
+            font-size: 1.8rem; 
+            margin-bottom: 30px;
+            letter-spacing: 2px; 
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
         }
+
+        .flower-icon { font-size: 1.4rem; vertical-align: middle; margin: 0 8px; color: #add8e6; }
 
         /* 選項樣式 */
         .qa-item {
@@ -74,34 +81,36 @@
             padding: 18px 25px;
             border-radius: 25px;
             cursor: pointer;
-            color: var(--deep-text);
+            color: var(--text-blue);
             font-weight: bold;
-            box-shadow: 0 5px 0 var(--dream-blue);
+            box-shadow: 0 5px 0 #e1f5fe;
             transition: 0.2s;
             display: flex; align-items: center; justify-content: space-between;
             font-size: 1.05rem;
+            border: 1px solid #f0faff;
         }
 
-        .qa-item:hover { transform: translateY(-3px); box-shadow: 0 8px 0 var(--dream-blue); }
-        .qa-item:active { transform: translateY(3px); box-shadow: 0 0px 0 var(--dream-blue); }
-        .qa-item::after { content: '🦋'; font-size: 1rem; }
+        .qa-item:hover { transform: translateY(-3px); background: #f0faff; }
+        .qa-item:active { transform: translateY(3px); box-shadow: 0 0px 0 #e1f5fe; }
+        
+        /* 問題右側的花朵 */
+        .qa-item::after { content: '💠'; color: #b2ebf2; font-size: 1.1rem; }
 
         /* 解答頁 */
         .hidden { display: none; }
         .ans-text {
-            font-size: 1.25rem; line-height: 1.8; color: #37474f;
+            font-size: 1.2rem; line-height: 1.8; color: #546e7a;
             margin: 30px 0; min-height: 120px;
         }
 
         .btn-back {
-            background: linear-gradient(45deg, #4fc3f7, #81d4fa);
+            background: linear-gradient(45deg, #81d4fa, #b3e5fc);
             color: white; border: none; padding: 15px 40px;
             border-radius: 35px; font-weight: bold; cursor: pointer;
-            box-shadow: 0 5px 15px rgba(79, 195, 247, 0.4);
-            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(129, 212, 250, 0.3);
         }
 
-        /* 點擊特效：愛心與星星 */
+        /* 點擊噴發粒子：花朵特效 */
         .particle {
             position: fixed; pointer-events: none; z-index: 100;
             animation: burst 0.8s ease-out forwards;
@@ -112,7 +121,6 @@
             100% { transform: scale(0) translate(var(--tx), var(--ty)); opacity: 0; }
         }
 
-        /* 翻轉動畫類 */
         .card-flip { transform: rotateY(90deg); opacity: 0; }
     </style>
 </head>
@@ -124,7 +132,7 @@
         <div class="game-card" id="mainCard">
             
             <div id="pageHome">
-                <h1>✨ 冒險者指南 ✨</h1>
+                <h1>🌼 冒險者指南 🌼</h1>
                 <div class="qa-item" onclick="launch(1, event)">請問下一關要去哪?</div>
                 <div class="qa-item" onclick="launch(2, event)">請問闖關卡怎麼拿?</div>
                 <div class="qa-item" onclick="launch(3, event)">請問要去哪裡蓋章?</div>
@@ -133,15 +141,15 @@
             </div>
 
             <div id="pageAns" class="hidden">
-                <h1 id="ansTitle">小祕訣</h1>
+                <h1 id="ansTitle">🍀 小秘訣 🍀</h1>
                 <div class="ans-text" id="ansBody"></div>
-                <button class="btn-back" onclick="goBack()">我知道了！</button>
+                <button class="btn-back" onclick="goHome()">回主頁面</button>
             </div>
 
         </div>
     </div>
 
-    <audio id="sfx" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
+    <audio id="sfx" src="https://www.soundjay.com/communication/sounds/beep-07.mp3" preload="auto"></audio>
 
     <script>
         const content = {
@@ -149,48 +157,45 @@
             2: "幫我找我們櫃四周穿白色衣服的美女領！",
             3: "面對我們櫃的這個方向直走右轉會看到大月亮！那裡就有蓋章區！",
             4: "闖關完可以獲得一個夾娃娃機會！球球裡面都有小驚喜喔！",
-            5: "完全一樣喔！我們提供最高品質的跨平台體驗，隨時隨地開啟冒險！"
+            5: "完全一樣喔！這是一款跨平台大世界遊戲，無論用什麼玩都順暢！"
         };
 
-        // 背景氣泡生成
+        // 背景藍色系氣泡生成
         const deco = document.getElementById('decoContainer');
-        for(let i=0; i<12; i++) {
+        for(let i=0; i<15; i++) {
             const orb = document.createElement('div');
             orb.className = 'floating-orb';
-            const size = Math.random() * 80 + 20 + 'px';
+            const size = Math.random() * 60 + 20 + 'px';
             orb.style.width = size; orb.style.height = size;
             orb.style.left = Math.random() * 100 + '%';
-            orb.style.animationDelay = Math.random() * 10 + 's';
+            orb.style.animationDelay = Math.random() * 8 + 's';
             deco.appendChild(orb);
         }
 
-        // 點擊粒子特效
+        // 點擊粒子特效：各種藍粉色系花朵
         function createParticles(x, y) {
-            const symbols = ['❤️', '⭐', '✨', '🌸'];
-            for(let i=0; i<10; i++) {
+            const flowers = ['🌸', '🌼', '❄️', '🔹', '🍃'];
+            for(let i=0; i<8; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
-                p.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                p.innerText = flowers[Math.floor(Math.random() * flowers.length)];
                 p.style.left = x + 'px';
                 p.style.top = y + 'px';
-                p.style.setProperty('--tx', (Math.random() - 0.5) * 200 + 'px');
-                p.style.setProperty('--ty', (Math.random() - 0.5) * 200 + 'px');
-                p.style.fontSize = Math.random() * 20 + 10 + 'px';
+                p.style.setProperty('--tx', (Math.random() - 0.5) * 250 + 'px');
+                p.style.setProperty('--ty', (Math.random() - 0.5) * 250 + 'px');
+                p.style.fontSize = Math.random() * 15 + 15 + 'px';
                 document.body.appendChild(p);
                 setTimeout(() => p.remove(), 800);
             }
         }
 
         function launch(id, e) {
-            // 播放音效
             const sfx = document.getElementById('sfx');
             sfx.currentTime = 0;
             sfx.play().catch(()=>{});
 
-            // 粒子特效
             createParticles(e.clientX, e.clientY);
 
-            // 卡片翻轉轉場
             const card = document.getElementById('mainCard');
             card.classList.add('card-flip');
             
@@ -202,7 +207,11 @@
             }, 300);
         }
 
-        function goBack() {
+        function goHome() {
+            const sfx = document.getElementById('sfx');
+            sfx.currentTime = 0;
+            sfx.play().catch(()=>{});
+
             const card = document.getElementById('mainCard');
             card.classList.add('card-flip');
             setTimeout(() => {
