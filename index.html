@@ -94,7 +94,7 @@
         .qa-item:active { transform: translateY(3px); box-shadow: 0 0px 0 #e1f5fe; }
         
         /* 問題右側的花朵 */
-        .qa-item::after { content: '💠'; color: #b2ebf2; font-size: 1.1rem; }
+        .qa-item::after { content: '🤍'; color: #b2ebf2; font-size: 1.1rem; }
 
         /* 解答頁 */
         .hidden { display: none; }
@@ -141,7 +141,7 @@
             </div>
 
             <div id="pageAns" class="hidden">
-                <h1 id="ansTitle">🍀 小秘訣 🍀</h1>
+                <h1 id="ansTitle">🌸 小秘訣 🌸</h1>
                 <div class="ans-text" id="ansBody"></div>
                 <button class="btn-back" onclick="goHome()">回主頁面</button>
             </div>
@@ -174,7 +174,7 @@
 
         // 點擊粒子特效：各種藍粉色系花朵
         function createParticles(x, y) {
-            const flowers = ['🌸', '🌼', '❄️', '🔹', '🍃'];
+            const flowers = ['🌸', '🌼', '❄️', '🤍', '🍃'];
             for(let i=0; i<8; i++) {
                 const p = document.createElement('div');
                 p.className = 'particle';
